@@ -4,6 +4,36 @@
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ── Aurora background ──────────────────────────────────────── */
+  (function initAurora() {
+    const layer = document.createElement('div');
+    layer.id = 'aurora-layer';
+    layer.setAttribute('aria-hidden', 'true');
+
+    layer.innerHTML = `
+      <div class="aurora-pulse"></div>
+      <div class="aurora-blob aurora-blob-1"></div>
+      <div class="aurora-blob aurora-blob-2"></div>
+      <div class="aurora-blob aurora-blob-3"></div>
+      <div class="aurora-stars"></div>
+    `;
+
+    document.body.prepend(layer);
+
+    const starContainer = layer.querySelector('.aurora-stars');
+    const starCount = reduced ? 0 : 80;
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'aurora-star';
+      star.style.setProperty('--dur',   (Math.random() * 3 + 2) + 's');
+      star.style.setProperty('--delay', (Math.random() * 6) + 's');
+      star.style.setProperty('--peak',  (Math.random() * 0.7 + 0.1).toFixed(2));
+      star.style.left = (Math.random() * 100) + 'vw';
+      star.style.top  = (Math.random() * 100) + 'vh';
+      starContainer.appendChild(star);
+    }
+  })();
+
   /* ── Page transition ────────────────────────────────────────── */
   const overlay = document.createElement('div');
   overlay.id = 'page-overlay';
