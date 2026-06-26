@@ -4,41 +4,6 @@
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── Fog / smoke ────────────────────────────────────────────── */
-  (function initFog() {
-    const fog = document.createElement('div');
-    fog.id = 'fog-layer';
-    fog.setAttribute('aria-hidden', 'true');
-
-    const clouds = [
-      { w: 900, h: 500, l: -10,  t: 5,  dur: 38, delay: 0,    op: 0.055 },
-      { w: 700, h: 420, l: 40,   t: 55, dur: 52, delay: -14,  op: 0.04  },
-      { w: 1100,h: 600, l: -20,  t: 30, dur: 44, delay: -6,   op: 0.035 },
-      { w: 800, h: 450, l: 30,   t: 70, dur: 60, delay: -22,  op: 0.05  },
-      { w: 650, h: 380, l: 60,   t: 15, dur: 34, delay: -9,   op: 0.045 },
-      { w: 950, h: 520, l: -5,   t: 80, dur: 48, delay: -18,  op: 0.03  },
-      { w: 750, h: 400, l: 20,   t: 45, dur: 56, delay: -30,  op: 0.05  },
-    ];
-
-    clouds.forEach((c, i) => {
-      const el = document.createElement('div');
-      el.className = 'fog-cloud';
-      el.style.cssText = `
-        width:${c.w}px;
-        height:${c.h}px;
-        left:${c.l}%;
-        top:${c.t}%;
-        opacity:${c.op};
-        animation-duration:${c.dur}s;
-        animation-delay:${c.delay}s;
-        animation-name: fog-drift-${(i % 3) + 1};
-      `;
-      fog.appendChild(el);
-    });
-
-    document.body.prepend(fog);
-  })();
-
   /* ── Page transition ────────────────────────────────────────── */
   const overlay = document.createElement('div');
   overlay.id = 'page-overlay';
