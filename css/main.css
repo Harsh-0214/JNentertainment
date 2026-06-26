@@ -98,29 +98,29 @@ svg { display: block; }
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(60px);
   mix-blend-mode: screen;
   will-change: transform;
 }
 
 .aurora-blob-1 {
-  width: 55vw; height: 55vw;
-  top: -15%; left: -15%;
-  background: rgba(200, 15, 15, 0.38);
+  width: 65vw; height: 65vw;
+  top: -20%; left: -20%;
+  background: rgba(224, 18, 18, 0.55);
   animation: blob1 30s ease-in-out infinite alternate;
 }
 
 .aurora-blob-2 {
-  width: 55vw; height: 55vw;
-  bottom: -15%; right: -15%;
-  background: rgba(140, 5, 5, 0.32);
+  width: 60vw; height: 60vw;
+  bottom: -20%; right: -20%;
+  background: rgba(180, 10, 10, 0.48);
   animation: blob2 40s ease-in-out infinite alternate;
 }
 
 .aurora-blob-3 {
-  width: 35vw; height: 35vw;
+  width: 40vw; height: 40vw;
   top: 30%; left: 30%;
-  background: rgba(80, 0, 0, 0.28);
+  background: rgba(120, 5, 5, 0.4);
   animation: blob3 50s ease-in-out infinite alternate;
 }
 
