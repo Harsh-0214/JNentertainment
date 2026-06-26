@@ -104,23 +104,26 @@ svg { display: block; }
 }
 
 .aurora-blob-1 {
-  width: 65vw; height: 65vw;
-  top: -20%; left: -20%;
-  background: rgba(224, 18, 18, 0.55);
+  width: clamp(200px, 30vw, 480px);
+  height: clamp(200px, 30vw, 480px);
+  top: -10%; left: -10%;
+  background: rgba(224, 18, 18, 0.5);
   animation: blob1 30s ease-in-out infinite alternate;
 }
 
 .aurora-blob-2 {
-  width: 60vw; height: 60vw;
-  bottom: -20%; right: -20%;
-  background: rgba(180, 10, 10, 0.48);
+  width: clamp(180px, 28vw, 440px);
+  height: clamp(180px, 28vw, 440px);
+  bottom: -10%; right: -10%;
+  background: rgba(180, 10, 10, 0.44);
   animation: blob2 40s ease-in-out infinite alternate;
 }
 
 .aurora-blob-3 {
-  width: 40vw; height: 40vw;
-  top: 30%; left: 30%;
-  background: rgba(120, 5, 5, 0.4);
+  width: clamp(140px, 20vw, 320px);
+  height: clamp(140px, 20vw, 320px);
+  top: 35%; left: 35%;
+  background: rgba(120, 5, 5, 0.36);
   animation: blob3 50s ease-in-out infinite alternate;
 }
 
@@ -719,6 +722,65 @@ section { padding-block: var(--section-py); }
   clip: rect(0,0,0,0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* ── Responsive overrides ───────────────────────────────────────── */
+@media (max-width: 479px) {
+  /* Typography scale-down on very small screens */
+  .section-title { font-size: clamp(2rem, 8vw, 2.75rem); }
+  .section-sub   { font-size: 0.9375rem; }
+
+  /* Buttons full-width on tiny screens */
+  .btn-group { flex-direction: column; align-items: stretch; }
+  .btn-group .btn { width: 100%; text-align: center; justify-content: center; }
+
+  /* Package tab buttons wrap */
+  .pkg-tabs { flex-wrap: wrap; }
+  .pkg-tab  { flex: 1 1 auto; text-align: center; }
+
+  /* Contact form rows collapse to single col */
+  .form-row { grid-template-columns: 1fr !important; }
+
+  /* Ticker text smaller */
+  .ticker-item { font-size: 0.7rem; }
+}
+
+@media (max-width: 767px) {
+  /* Hide vinyl disc on small screens to avoid layout bleed */
+  .hero-vinyl { display: none; }
+
+  /* Hero text breathes with full width */
+  .hero-sub { max-width: 100%; }
+
+  /* Stats always 2-col on mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Service cards full width below 640 handled by grid; ensure readable text */
+  .svc-icon { width: 40px; height: 40px; }
+
+  /* Pull quote strip — smaller font */
+  .pull-quote-text { font-size: clamp(1.35rem, 4.5vw, 2rem) !important; }
+
+  /* CTA strip text stack */
+  .cta-strip-inner { flex-direction: column; text-align: center; align-items: center; gap: 24px; }
+
+  /* Footer brand blurb shorter */
+  .footer-brand { max-width: 100%; }
+
+  /* Page hero (inner pages) smaller heading */
+  .page-hero-title { font-size: clamp(2.5rem, 10vw, 4.5rem) !important; }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  /* 2-col service cards on medium-small */
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet: 2-col services, keep events 2-col */
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .events-grid   { grid-template-columns: repeat(2, 1fr); }
+  .pkg-grid      { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── prefers-reduced-motion ─────────────────────────────────────── */

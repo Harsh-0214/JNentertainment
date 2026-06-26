@@ -147,9 +147,13 @@
 
     .equip-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: var(--sp-3);
       margin-block: var(--sp-6);
+    }
+
+    @media (min-width: 480px) {
+      .equip-list { grid-template-columns: repeat(2, 1fr); }
     }
 
     .equip-item {

@@ -200,11 +200,12 @@
 
     .always-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: var(--sp-4);
       margin-top: var(--sp-6);
     }
 
+    @media (min-width: 480px) { .always-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 768px) { .always-grid { grid-template-columns: repeat(4, 1fr); } }
 
     .always-item {
