@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — JN Entertainment</title>
+  <meta name="description" content="See JN Entertainment in action — weddings, birthdays and corporate events. Gallery of our work.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── Filter bar ────────────────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      gap: var(--sp-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--sp-8);
+      margin-top: var(--sp-7);
+    }
+
+    .gallery-filter-btn {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-grey-2);
+      padding: 10px 22px;
+      border-radius: var(--r-full);
+      border: 1px solid var(--c-border);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 44px;
+      background: transparent;
+      transition:
+        color        170ms ease-out,
+        background   170ms ease-out,
+        border-color 170ms ease-out,
+        transform    140ms ease-out;
+    }
+
+    .gallery-filter-btn:hover   { color: var(--c-white); border-color: rgba(255,255,255,0.3); }
+    .gallery-filter-btn:active  { transform: scale(0.97); }
+    .gallery-filter-btn.active  { background: var(--c-primary); color: var(--c-white); border-color: var(--c-primary); }
+    .gallery-filter-btn:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 3px; }
+
+    /* ── Gallery grid ──────────────────────────────────────────── */
+    .gallery-grid {
+      columns: 1;
+      gap: var(--sp-4);
+    }
+
+    @media (min-width: 640px)  { .gallery-grid { columns: 2; } }
+    @media (min-width: 1024px) { .gallery-grid { columns: 3; } }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: var(--sp-4);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--c-border);
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+      transition:
+        opacity   320ms ease-out,
+        transform 320ms var(--ease-out);
+    }
+
+    .gallery-item.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .gallery-placeholder {
+      width: 100%;
+      display: block;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%);
+      opacity: 0;
+      transition:
+        opacity 250ms ease-out;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--sp-5);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .gallery-item:hover .gallery-overlay { opacity: 1; }
+      .gallery-item:hover .gallery-placeholder { transform: scale(1.04); }
+    }
+
+    .gallery-placeholder {
+      transition: transform 360ms var(--ease-in-out);
+    }
+
+    .gallery-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .gallery-cat {
+      font-family: var(--font-heading);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c-primary);
+    }
+
+    .gallery-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--c-grey-1);
+    }
+
+    /* ── Marquee / reel strip ──────────────────────────────────── */
+    .reel-strip {
+      position: relative;
+      overflow: hidden;
+      margin-block: var(--sp-9);
+    }
+
+    .reel-track {
+      display: flex;
+      gap: var(--sp-4);
+      width: max-content;
+      animation: reel-scroll 25s linear infinite;
+    }
+
+    .reel-track:hover { animation-play-state: paused; }
+
+    @keyframes reel-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .reel-card {
+      flex-shrink: 0;
+      width: clamp(200px, 22vw, 300px);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      border: 1px solid var(--c-border);
+    }
+
+    .reel-card-inner {
+      width: 100%;
+      aspect-ratio: 9/16;
+      display: block;
+    }
+
+    /* ── Book CTA ──────────────────────────────────────────────── */
+    .gallery-book-cta {
+      position: relative;
+      text-align: center;
+      padding-block: clamp(64px, 8vw, 110px);
+      border-top: 1px solid var(--c-border);
+      margin-top: var(--sp-9);
+      overflow: hidden;
+    }
+
+    .gallery-book-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(224,18,18,0.06) 0%, transparent 70%);
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="JN Entertainment — home">
+      <img src="logo.jpg" alt="JN Entertainment" height="38" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="logo-svg" style="display:none;height:38px;width:auto" viewBox="0 0 120 60" aria-hidden="true">
+        <text x="4" y="52" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="58" font-weight="900" fill="#fff" letter-spacing="-1">JN</text>
+        <circle cx="24" cy="47" r="9" fill="#E01212"/><circle cx="24" cy="47" r="3.5" fill="#0A0A0A"/>
+      </svg>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="packages.html">Packages</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Book Now <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+    <button id="hamburger" class="hamburger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <nav class="mobile-nav-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="packages.html">Packages</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
+</div>
+
+<main>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="t-label reveal">Portfolio</span>
+    <h1 class="page-hero-title reveal" data-delay="60">The<br>Experience</h1>
+    <p class="section-sub reveal" data-delay="130">Every event tells a story. Here's ours — captured in the moments that matter.</p>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+
+    <!-- Filter -->
+    <div class="filter-bar reveal" role="group" aria-label="Filter gallery by event type">
+      <button class="gallery-filter-btn active" data-filter="all" aria-pressed="true">All Events</button>
+      <button class="gallery-filter-btn" data-filter="wedding" aria-pressed="false">Weddings</button>
+      <button class="gallery-filter-btn" data-filter="birthday" aria-pressed="false">Birthdays</button>
+      <button class="gallery-filter-btn" data-filter="corporate" aria-pressed="false">Corporate</button>
+    </div>
+
+    <!-- Gallery grid -->
+    <div class="gallery-grid" aria-label="Event gallery">
+
+      <div class="gallery-item visible" data-cat="wedding">
+        <svg class="gallery-placeholder" viewBox="0 0 400 520" style="background:linear-gradient(160deg,#1a0808,#2d1010,#1a0d0d)" aria-label="Wedding reception setup placeholder"><text x="200" y="280" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">WEDDING SETUP</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Wedding</span><span class="gallery-label">&middot; Reception &amp; Dance Floor</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="birthday" style="transition-delay:40ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 360" style="background:linear-gradient(160deg,#0a0a1c,#14103a,#0a0a0f)" aria-label="Birthday party setup placeholder"><text x="200" y="195" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">BIRTHDAY PARTY</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Birthday</span><span class="gallery-label">&middot; DJ &amp; Lighting Rig</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="corporate" style="transition-delay:80ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 440" style="background:linear-gradient(160deg,#091010,#0e2222,#0a0f0f)" aria-label="Corporate event setup placeholder"><text x="200" y="240" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">CORPORATE EVENT</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Corporate</span><span class="gallery-label">&middot; Gala Dinner AV</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="wedding" style="transition-delay:120ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 400" style="background:linear-gradient(160deg,#1c0808,#2a0d0d,#150808)" aria-label="Cold spark wedding effect placeholder"><text x="200" y="215" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">COLD SPARKS</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Wedding</span><span class="gallery-label">&middot; Cold Spark First Dance</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="birthday" style="transition-delay:160ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 560" style="background:linear-gradient(160deg,#0c0a1c,#18143a,#0c0a14)" aria-label="Birthday laser show placeholder"><text x="200" y="300" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">LASER SHOW</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Birthday</span><span class="gallery-label">&middot; Laser &amp; Fog EFX</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="corporate" style="transition-delay:200ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 380" style="background:linear-gradient(160deg,#091010,#102020,#0a1010)" aria-label="LED wall corporate placeholder"><text x="200" y="205" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">LED WALL</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Corporate</span><span class="gallery-label">&middot; LED Wall Production</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="wedding" style="transition-delay:240ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 480" style="background:linear-gradient(160deg,#180808,#280c0c,#100808)" aria-label="Moving heads wedding placeholder"><text x="200" y="255" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">MOVING HEADS</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Wedding</span><span class="gallery-label">&middot; Full Lighting Rig</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="birthday" style="transition-delay:280ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 350" style="background:linear-gradient(160deg,#0c081a,#160f30,#0c0814)" aria-label="Birthday CO2 jets placeholder"><text x="200" y="190" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">CO2 JETS</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Birthday</span><span class="gallery-label">&middot; CO₂ Cryo EFX</span></div></div>
+      </div>
+
+      <div class="gallery-item visible" data-cat="corporate" style="transition-delay:320ms">
+        <svg class="gallery-placeholder" viewBox="0 0 400 420" style="background:linear-gradient(160deg,#090f0f,#0e1c1c,#090f0f)" aria-label="Corporate MC placeholder"><text x="200" y="225" font-family="'Bebas Neue',sans-serif" font-size="28" fill="rgba(224,18,18,0.35)" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">MC SERVICE</text></svg>
+        <div class="gallery-overlay"><div class="gallery-meta"><span class="gallery-cat">Corporate</span><span class="gallery-label">&middot; Award Night MC</span></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Reel strip ───────────────────────────────────────────────── -->
+<div class="reel-strip" aria-hidden="true">
+  <div class="reel-track">
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#1a0808,#0a0808)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">JN EFX</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#0a0a1c,#0a080f)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">WEDDING</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#091010,#090f0a)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">DJ SET</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#181008,#0f0a08)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">BDAY</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#0f0818,#0a0814)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">CORP</text></svg></div>
+    <!-- duplicated for seamless loop -->
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#1a0808,#0a0808)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">JN EFX</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#0a0a1c,#0a080f)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">WEDDING</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#091010,#090f0a)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">DJ SET</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#181008,#0f0a08)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">BDAY</text></svg></div>
+    <div class="reel-card"><svg class="reel-card-inner" viewBox="0 0 200 355" style="background:linear-gradient(180deg,#0f0818,#0a0814)"><text x="100" y="190" font-family="'Bebas Neue',sans-serif" font-size="20" fill="rgba(224,18,18,0.3)" text-anchor="middle" letter-spacing="2">CORP</text></svg></div>
+  </div>
+</div>
+
+<div class="gallery-book-cta">
+  <div class="container">
+    <p class="t-label reveal" style="text-align:center;display:block;margin-bottom:var(--sp-4)">Want to be in the gallery?</p>
+    <h2 class="section-title reveal" data-delay="60" style="text-align:center;font-size:clamp(2.25rem,5vw,4rem);margin-bottom:var(--sp-7)">Let's Create<br>Your Moment</h2>
+    <div class="btn-group reveal" data-delay="140" style="justify-content:center">
+      <a href="contact.html" class="btn btn--primary btn--lg">Book Your Event</a>
+      <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost btn--lg">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        See More on Instagram
+      </a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="logo.jpg" alt="JN Entertainment" height="44" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <svg class="logo-svg" style="display:none;height:44px;width:auto" viewBox="0 0 120 60" aria-hidden="true">
+            <text x="4" y="52" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="58" font-weight="900" fill="#fff" letter-spacing="-1">JN</text>
+            <circle cx="24" cy="47" r="9" fill="#E01212"/><circle cx="24" cy="47" r="3.5" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <p>Premium DJ, MC, AV &amp; EFX entertainment for weddings, birthdays and corporate events.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Services links"><h4>Services</h4><ul><li><a href="services.html">DJ</a></li><li><a href="services.html">MC</a></li><li><a href="services.html">AV Production</a></li><li><a href="services.html">Special EFX</a></li></ul></nav>
+      <nav class="footer-col" aria-label="Company links"><h4>Company</h4><ul><li><a href="packages.html">Packages</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Book Now</a></li></ul></nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&copy; 2025 JN Entertainment. All rights reserved.</p>
+      <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="footer-copyright" style="color:var(--c-grey-2);transition:color 150ms ease-out" onmouseover="this.style.color='var(--c-white)'" onmouseout="this.style.color='var(--c-grey-2)'">@jnentertainment.av</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

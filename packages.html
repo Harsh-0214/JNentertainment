@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packages — JN Entertainment</title>
+  <meta name="description" content="JN Entertainment packages: Essential, Premium and Elite setups for weddings, birthdays and corporate events. Contact for pricing.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── Package tabs ──────────────────────────────────────────── */
+    .pkg-tabs-wrap {
+      margin-top: var(--sp-8);
+    }
+
+    .pkg-tabs {
+      display: flex;
+      gap: var(--sp-2);
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-full);
+      padding: 5px;
+      width: fit-content;
+      margin-bottom: var(--sp-8);
+      flex-wrap: wrap;
+    }
+
+    .pkg-tab {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-grey-2);
+      padding: 10px 28px;
+      border-radius: var(--r-full);
+      border: 1px solid transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 44px;
+      transition:
+        color        180ms ease-out,
+        background   180ms ease-out,
+        border-color 180ms ease-out,
+        transform    140ms ease-out;
+    }
+
+    .pkg-tab:hover   { color: var(--c-white); }
+    .pkg-tab:active  { transform: scale(0.97); }
+    .pkg-tab.active  { background: var(--c-primary); color: var(--c-white); border-color: var(--c-primary); }
+    .pkg-tab:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 3px; }
+
+    /* ── Package panels ────────────────────────────────────────── */
+    .pkg-panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity   180ms ease-out,
+        transform 180ms ease-out;
+    }
+
+    .pkg-panel.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pkg-panel-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-6);
+    }
+
+    @media (min-width: 900px) { .pkg-panel-grid { grid-template-columns: 1fr 1.6fr; } }
+
+    .pkg-detail-card {
+      padding: clamp(32px, 4vw, 52px);
+      border-radius: var(--r-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pkg-badge-large {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 0.5625rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-white);
+      background: var(--c-primary);
+      padding: 5px 14px;
+      border-radius: var(--r-full);
+      margin-bottom: var(--sp-5);
+    }
+
+    .pkg-detail-name {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--c-white);
+      line-height: 0.95;
+      margin-bottom: var(--sp-4);
+    }
+
+    .pkg-price {
+      font-family: var(--font-heading);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--c-grey-2);
+      margin-bottom: var(--sp-6);
+    }
+
+    .pkg-price em {
+      font-style: normal;
+      color: var(--c-primary);
+      font-size: 1.125rem;
+    }
+
+    .pkg-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    /* ── Feature list ──────────────────────────────────────────── */
+    .pkg-features {
+      padding: clamp(32px, 4vw, 52px);
+      border-radius: var(--r-xl);
+    }
+
+    .pkg-features h3 {
+      font-family: var(--font-heading);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-grey-2);
+      margin-bottom: var(--sp-5);
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding: 14px var(--sp-4);
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid transparent;
+    }
+
+    .feature-item.included { border-color: rgba(255,255,255,0.06); }
+    .feature-item.excluded { opacity: 0.4; }
+
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-icon.yes {
+      background: rgba(34,197,94,0.12);
+      color: #22c55e;
+    }
+
+    .feature-icon.no {
+      background: rgba(255,255,255,0.05);
+      color: var(--c-grey-2);
+    }
+
+    .feature-text {
+      font-size: 0.9375rem;
+      color: var(--c-grey-1);
+    }
+
+    .feature-item.excluded .feature-text { color: var(--c-grey-2); }
+
+    /* ── What's always included ────────────────────────────────── */
+    .always-included {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-xl);
+      padding: clamp(32px, 4vw, 52px);
+      margin-top: var(--sp-9);
+    }
+
+    .always-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--sp-4);
+      margin-top: var(--sp-6);
+    }
+
+    @media (min-width: 768px) { .always-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .always-item {
+      text-align: center;
+      padding: var(--sp-5) var(--sp-4);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-lg);
+    }
+
+    .always-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(224,18,18,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-primary);
+      margin: 0 auto var(--sp-3);
+    }
+
+    .always-label {
+      font-size: 0.8125rem;
+      color: var(--c-grey-1);
+      font-weight: 500;
+    }
+
+    /* ── FAQ ───────────────────────────────────────────────────── */
+    .faq-section {
+      margin-top: var(--sp-9);
+    }
+
+    .faq-list {
+      margin-top: var(--sp-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+    }
+
+    .faq-item {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      transition: border-color 180ms ease-out;
+    }
+
+    .faq-item.open { border-color: rgba(224,18,18,0.25); }
+
+    .faq-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-4);
+      padding: var(--sp-5) var(--sp-6);
+      font-family: var(--font-heading);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--c-white);
+      text-align: left;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 48px;
+      transition: color 150ms ease-out;
+    }
+
+    .faq-trigger:focus-visible { outline: 2px solid var(--c-primary); outline-offset: -2px; border-radius: var(--r-lg); }
+
+    .faq-item.open .faq-trigger { color: var(--c-primary); }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      transition: transform 250ms var(--ease-out), color 150ms ease-out;
+      color: var(--c-grey-2);
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+      color: var(--c-primary);
+    }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 280ms var(--ease-out);
+    }
+
+    .faq-body-inner {
+      padding: 0 var(--sp-6) var(--sp-5);
+      font-size: 0.9375rem;
+      color: var(--c-grey-1);
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="JN Entertainment — home">
+      <img src="logo.jpg" alt="JN Entertainment" height="38" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="logo-svg" style="display:none;height:38px;width:auto" viewBox="0 0 120 60" aria-hidden="true">
+        <text x="4" y="52" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="58" font-weight="900" fill="#fff" letter-spacing="-1">JN</text>
+        <circle cx="24" cy="47" r="9" fill="#E01212"/><circle cx="24" cy="47" r="3.5" fill="#0A0A0A"/>
+      </svg>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="packages.html">Packages</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Book Now <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+    <button id="hamburger" class="hamburger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <nav class="mobile-nav-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="packages.html">Packages</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
+</div>
+
+<main>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="t-label reveal">Pricing</span>
+    <h1 class="page-hero-title reveal" data-delay="60">Setups &amp;<br>Packages</h1>
+    <p class="section-sub reveal" data-delay="130">Choose what fits your event. Every package includes professional setup, operation and breakdown — so all you do is show up and enjoy.</p>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <div class="pkg-tabs-wrap reveal">
+      <div class="pkg-tabs" role="tablist" aria-label="Package tiers" class="pkg-tabs">
+        <button class="pkg-tab active" role="tab" aria-selected="true" data-panel="panel-essential" id="tab-essential" aria-controls="panel-essential">Essential</button>
+        <button class="pkg-tab" role="tab" aria-selected="false" data-panel="panel-premium" id="tab-premium" aria-controls="panel-premium">Premium</button>
+        <button class="pkg-tab" role="tab" aria-selected="false" data-panel="panel-elite" id="tab-elite" aria-controls="panel-elite">Elite</button>
+      </div>
+
+      <!-- ESSENTIAL -->
+      <div class="pkg-panel active" id="panel-essential" role="tabpanel" aria-labelledby="tab-essential" style="display:block">
+        <div class="pkg-panel-grid">
+          <div class="pkg-detail-card card-glass">
+            <div class="pkg-detail-name">Essential</div>
+            <div class="pkg-price">Starting from <em>Contact for Pricing</em></div>
+            <p style="font-size:.9375rem;color:var(--c-grey-1);line-height:1.7;margin-bottom:var(--sp-6)">
+              Perfect for smaller gatherings — birthdays, intimate weddings and private parties. Clean, professional sound with DJ and MC coverage.
+            </p>
+            <div class="pkg-cta-group">
+              <a href="contact.html" class="btn btn--primary">Book This Package</a>
+              <a href="contact.html" class="btn btn--ghost">Ask a Question</a>
+            </div>
+          </div>
+
+          <div class="pkg-features card-glass">
+            <h3>What's Included</h3>
+            <div class="feature-list">
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span class="feature-text">2× PA Speakers (fronts)</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span class="feature-text">DJ Equipment &amp; Setup</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span class="feature-text">MC Service</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span class="feature-text">Basic LED Par Lighting (4 fixtures)</span>
+              </div>
+              <div class="feature-item excluded" aria-label="Not included:">
+                <div class="feature-icon no" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <span class="feature-text">Subwoofer</span>
+              </div>
+              <div class="feature-item excluded" aria-label="Not included:">
+                <div class="feature-icon no" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <span class="feature-text">LED Panel / Screen</span>
+              </div>
+              <div class="feature-item excluded" aria-label="Not included:">
+                <div class="feature-icon no" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <span class="feature-text">Special EFX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="pkg-panel" id="panel-premium" role="tabpanel" aria-labelledby="tab-premium" style="display:none">
+        <div class="pkg-panel-grid">
+          <div class="pkg-detail-card card-glass" style="border-color:rgba(224,18,18,0.28)">
+            <div class="pkg-badge-large">Most Popular</div>
+            <div class="pkg-detail-name">Premium</div>
+            <div class="pkg-price">Starting from <em>Contact for Pricing</em></div>
+            <p style="font-size:.9375rem;color:var(--c-grey-1);line-height:1.7;margin-bottom:var(--sp-6)">
+              Our most popular choice for weddings and significant celebrations. Full sound coverage, moving head lighting and LED screen backdrop — everything that makes a venue feel transformed.
+            </p>
+            <div class="pkg-cta-group">
+              <a href="contact.html" class="btn btn--primary">Book This Package</a>
+              <a href="contact.html" class="btn btn--ghost">Ask a Question</a>
+            </div>
+          </div>
+
+          <div class="pkg-features card-glass">
+            <h3>What's Included</h3>
+            <div class="feature-list">
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">4× PA Speakers (fronts + fills)</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">1× Subwoofer</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">DJ Equipment &amp; Setup</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">MC Service</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">Full LED Par + Moving Heads (8 fixtures)</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">1× LED Panel / Screen Backdrop</span>
+              </div>
+              <div class="feature-item excluded" aria-label="Not included:">
+                <div class="feature-icon no" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+                <span class="feature-text">Special EFX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ELITE -->
+      <div class="pkg-panel" id="panel-elite" role="tabpanel" aria-labelledby="tab-elite" style="display:none">
+        <div class="pkg-panel-grid">
+          <div class="pkg-detail-card card-glass">
+            <div class="pkg-detail-name">Elite</div>
+            <div class="pkg-price"><em>Request a Quote</em></div>
+            <p style="font-size:.9375rem;color:var(--c-grey-1);line-height:1.7;margin-bottom:var(--sp-6)">
+              The full production experience. For large-scale events where only the best will do — complete coverage, LED walls, full lighting rig and dedicated special effects technician.
+            </p>
+            <div class="pkg-cta-group">
+              <a href="contact.html" class="btn btn--primary">Request a Quote</a>
+              <a href="contact.html" class="btn btn--ghost">Ask a Question</a>
+            </div>
+          </div>
+
+          <div class="pkg-features card-glass">
+            <h3>What's Included</h3>
+            <div class="feature-list">
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">6× PA Speakers (full venue coverage)</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">2× Subwoofers</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">DJ Equipment &amp; Setup</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">MC Service</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">Full LED Par + Moving Heads + Beams (16 fixtures)</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">LED Wall / Multiple Panels</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">Cold Spark / CO₂ / Fog EFX</span>
+              </div>
+              <div class="feature-item included">
+                <div class="feature-icon yes" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span class="feature-text">Dedicated AV Technician</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Always included -->
+    <div class="always-included reveal">
+      <span class="t-label" style="display:block;margin-bottom:var(--sp-3)">Every Package</span>
+      <h2 class="section-title" style="font-size:clamp(1.75rem,3.5vw,2.75rem);margin-bottom:0">Always Included</h2>
+      <div class="always-grid">
+        <div class="always-item">
+          <div class="always-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="always-label">On-Time Setup</div>
+        </div>
+        <div class="always-item">
+          <div class="always-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="always-label">Professional Operation</div>
+        </div>
+        <div class="always-item">
+          <div class="always-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.45 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.73A16 16 0 0 0 16 16.82l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="always-label">Pre-Event Consultation</div>
+        </div>
+        <div class="always-item">
+          <div class="always-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="always-label">Full Pack-Down</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section reveal">
+      <span class="t-label" style="display:block;margin-bottom:var(--sp-3)">Common Questions</span>
+      <h2 class="section-title" style="font-size:clamp(1.75rem,3.5vw,2.75rem)">FAQ</h2>
+
+      <div class="faq-list" role="list">
+        <div class="faq-item" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" id="faq-1">
+            How far in advance should I book?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body" role="region" aria-labelledby="faq-1">
+            <div class="faq-body-inner">We recommend booking at least 3–6 months in advance for weddings and major events. Popular dates fill up fast. For smaller events or weekday bookings, 4–6 weeks is usually sufficient — but contact us as soon as you have a date.</div>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" id="faq-2">
+            Can I customise a package?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body" role="region" aria-labelledby="faq-2">
+            <div class="faq-body-inner">Absolutely. The packages above are starting points — we can add, remove or swap individual elements to match your exact needs and budget. Contact us and we'll build something custom for you.</div>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" id="faq-3">
+            Do you travel outside the local area?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body" role="region" aria-labelledby="faq-3">
+            <div class="faq-body-inner">Yes — we travel for events. Travel fees may apply depending on the distance. Get in touch with your event location and we'll factor it into your quote.</div>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" id="faq-4">
+            What's the booking process?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body" role="region" aria-labelledby="faq-4">
+            <div class="faq-body-inner">Fill in the contact form or message us directly. We'll discuss your event, recommend a package, and send a quote. Once you're happy, a deposit secures your date and we handle everything from there.</div>
+          </div>
+        </div>
+
+        <div class="faq-item" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" id="faq-5">
+            Are cold sparks safe for indoor use?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-body" role="region" aria-labelledby="faq-5">
+            <div class="faq-body-inner">Yes — cold spark machines produce a cool pyrotechnic effect that's safe for indoor environments. They produce no heat or flame. We operate all effects professionally and always check venue requirements and clearances beforehand.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="logo.jpg" alt="JN Entertainment" height="44" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <svg class="logo-svg" style="display:none;height:44px;width:auto" viewBox="0 0 120 60" aria-hidden="true">
+            <text x="4" y="52" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="58" font-weight="900" fill="#fff" letter-spacing="-1">JN</text>
+            <circle cx="24" cy="47" r="9" fill="#E01212"/><circle cx="24" cy="47" r="3.5" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <p>Premium DJ, MC, AV &amp; EFX entertainment for weddings, birthdays and corporate events.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Services links"><h4>Services</h4><ul><li><a href="services.html">DJ</a></li><li><a href="services.html">MC</a></li><li><a href="services.html">AV Production</a></li><li><a href="services.html">Special EFX</a></li></ul></nav>
+      <nav class="footer-col" aria-label="Company links"><h4>Company</h4><ul><li><a href="packages.html">Packages</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Book Now</a></li></ul></nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&copy; 2025 JN Entertainment. All rights reserved.</p>
+      <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="footer-copyright" style="color:var(--c-grey-2);transition:color 150ms ease-out" onmouseover="this.style.color='var(--c-white)'" onmouseout="this.style.color='var(--c-grey-2)'">@jnentertainment.av</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

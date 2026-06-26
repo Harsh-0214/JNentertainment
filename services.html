@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — JN Entertainment</title>
+  <meta name="description" content="Professional DJ, MC, AV production and special effects services from JN Entertainment. Premium entertainment for any event.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── Service blocks ────────────────────────────────────────── */
+    .svc-block {
+      padding-block: var(--section-py);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .svc-block:last-child { border-bottom: none; }
+
+    .svc-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(40px, 6vw, 80px);
+      align-items: center;
+    }
+
+    @media (min-width: 900px) {
+      .svc-layout { grid-template-columns: 1fr 1fr; }
+      .svc-layout.reverse .svc-visual { order: -1; }
+    }
+
+    .svc-visual {
+      position: relative;
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      min-height: 380px;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .svc-visual-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: var(--sp-4);
+    }
+
+    .svc-visual-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(224,18,18,0.08);
+      border: 1px solid rgba(224,18,18,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .svc-visual-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(224,18,18,0.08);
+      animation: ring-pulse 3s ease-in-out infinite;
+    }
+
+    .svc-visual-ring:nth-child(1) { width: 180px; height: 180px; animation-delay: 0s; }
+    .svc-visual-ring:nth-child(2) { width: 260px; height: 260px; animation-delay: .6s; }
+    .svc-visual-ring:nth-child(3) { width: 340px; height: 340px; animation-delay: 1.2s; }
+
+    @keyframes ring-pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.03); }
+    }
+
+    .svc-tag {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(10,10,10,0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .svc-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-primary);
+    }
+
+    .svc-tag-text {
+      font-family: var(--font-heading);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c-white);
+    }
+
+    .svc-number {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 10vw, 9rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: rgba(224,18,18,0.06);
+      line-height: 1;
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .svc-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--c-white);
+      line-height: 0.92;
+      margin-bottom: var(--sp-4);
+      position: relative;
+    }
+
+    .svc-body p {
+      font-size: 1rem;
+      color: var(--c-grey-1);
+      line-height: 1.75;
+      margin-bottom: var(--sp-5);
+    }
+
+    .equip-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--sp-3);
+      margin-block: var(--sp-6);
+    }
+
+    .equip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-3);
+      padding: var(--sp-4);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-md);
+    }
+
+    .equip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-primary);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .equip-text {
+      font-size: 0.875rem;
+      color: var(--c-grey-1);
+      line-height: 1.5;
+    }
+
+    /* ── CTA ─────────────────────────────────────────────────── */
+    .services-cta {
+      text-align: center;
+      padding-block: clamp(72px, 9vw, 120px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .services-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(224,18,18,0.07) 0%, transparent 70%);
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="JN Entertainment — home">
+      <img src="logo.jpg" alt="JN Entertainment" height="38" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="logo-svg" style="display:none;height:38px;width:auto" viewBox="0 0 120 60" aria-hidden="true">
+        <text x="4" y="52" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="58" font-weight="900" fill="#fff" letter-spacing="-1">JN</text>
+        <circle cx="24" cy="47" r="9" fill="#E01212"/><circle cx="24" cy="47" r="3.5" fill="#0A0A0A"/>
+      </svg>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="packages.html">Packages</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Book Now <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+    <button id="hamburger" class="hamburger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <nav class="mobile-nav-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="packages.html">Packages</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
+</div>
+
+<main>
+
+<!-- ── Page hero ────────────────────────────────────────────────── -->
+<header class="page-hero">
+  <div class="container">
+    <span class="t-label reveal">What We Do</span>
+    <h1 class="page-hero-title reveal" data-delay="60">Our<br>Services</h1>
+    <p class="section-sub reveal" data-delay="130">Four disciplines. One team. Everything you need to make your event sound, look and feel extraordinary.</p>
+  </div>
+</header>
+
+<!-- ── DJ ───────────────────────────────────────────────────────── -->
+<section class="svc-block" aria-labelledby="h-dj">
+  <div class="container">
+    <div class="svc-layout">
+      <div class="svc-visual reveal">
+        <div class="svc-visual-inner">
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="18" r="3"/><circle cx="18" cy="15" r="3"/><polyline points="9 9 9 18 18 18 18 15"/><path d="M9 9l9-3"/></svg>
+          </div>
+        </div>
+        <div class="svc-tag">
+          <div class="svc-tag-dot"></div>
+          <span class="svc-tag-text">DJ Services</span>
+        </div>
+        <div class="svc-number" aria-hidden="true">01</div>
+      </div>
+
+      <div class="svc-body reveal" data-delay="80">
+        <span class="t-label">Service 01</span>
+        <h2 class="svc-title" id="h-dj">DJ</h2>
+        <p>Music is the pulse of any great event. Our DJs don't just play tracks — we curate experiences. We read your crowd, adapt on the fly, and ensure the energy never drops at the wrong moment.</p>
+        <p>From deep house and R&B for cocktail hours to high-energy EDM and hip-hop for wedding receptions and birthday celebrations — we cover every genre and every mood.</p>
+
+        <div class="equip-list" aria-label="DJ equipment included">
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Pioneer CDJ-2000NXS2 Decks</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Pioneer DJM-900NXS2 Mixer</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Professional Cabling &amp; Backline</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Custom DJ Booth &amp; Setup</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Playlist Consultation</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Live Mix &amp; Crowd Reading</span></div>
+        </div>
+
+        <a href="contact.html" class="btn btn--primary">Book a DJ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MC ───────────────────────────────────────────────────────── -->
+<section class="svc-block" aria-labelledby="h-mc">
+  <div class="container">
+    <div class="svc-layout reverse">
+      <div class="svc-body reveal">
+        <span class="t-label">Service 02</span>
+        <h2 class="svc-title" id="h-mc">MC</h2>
+        <p>A great MC is the invisible hand that guides your event. We keep your guests informed, entertained and engaged — making every announcement feel natural, every transition smooth.</p>
+        <p>Our MCs are warm, professional and adaptable. Whether you need someone high-energy for a birthday party or refined and elegant for a formal wedding reception, we match the tone to your event.</p>
+
+        <div class="equip-list" aria-label="MC services included">
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Pre-Event Briefing &amp; Run Sheet</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Ceremony &amp; Reception Hosting</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Guest Announcements &amp; Cues</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Speech Facilitation</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Crowd Engagement &amp; Games</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Wireless Lapel / Handheld Mic</span></div>
+        </div>
+
+        <a href="contact.html" class="btn btn--primary">Book an MC <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+
+      <div class="svc-visual reveal" data-delay="80">
+        <div class="svc-visual-inner">
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          </div>
+        </div>
+        <div class="svc-tag">
+          <div class="svc-tag-dot"></div>
+          <span class="svc-tag-text">MC Services</span>
+        </div>
+        <div class="svc-number" aria-hidden="true">02</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AV ───────────────────────────────────────────────────────── -->
+<section class="svc-block" aria-labelledby="h-av">
+  <div class="container">
+    <div class="svc-layout">
+      <div class="svc-visual reveal">
+        <div class="svc-visual-inner">
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          </div>
+        </div>
+        <div class="svc-tag">
+          <div class="svc-tag-dot"></div>
+          <span class="svc-tag-text">AV Production</span>
+        </div>
+        <div class="svc-number" aria-hidden="true">03</div>
+      </div>
+
+      <div class="svc-body reveal" data-delay="80">
+        <span class="t-label">Service 03</span>
+        <h2 class="svc-title" id="h-av">AV</h2>
+        <p>Poor sound ruins great events. Our professional-grade PA systems deliver crystal-clear, balanced audio whether you're in a 50-person room or an open-air 500-person venue.</p>
+        <p>Beyond audio, our AV packages include LED screens, projectors and LED walls that transform any space into a professional visual production environment.</p>
+
+        <div class="equip-list" aria-label="AV equipment included">
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Line Array / PA Speaker Systems</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Subwoofer Bass Systems</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Digital Mixing Consoles</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">LED Panels &amp; Display Screens</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Stage Monitors &amp; Fill Speakers</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Full Cable Management</span></div>
+        </div>
+
+        <a href="contact.html" class="btn btn--primary">Get AV Quote <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EFX ──────────────────────────────────────────────────────── -->
+<section class="svc-block" aria-labelledby="h-efx">
+  <div class="container">
+    <div class="svc-layout reverse">
+      <div class="svc-body reveal">
+        <span class="t-label">Service 04</span>
+        <h2 class="svc-title" id="h-efx">EFX</h2>
+        <p>Special effects aren't extras — they're the difference between a good party and an unforgettable one. Cold sparks cascading during your first dance. A CO₂ burst that hits as the drop lands. Lasers cutting through a dark room as the crowd goes wild.</p>
+        <p>We design and operate all effects live, in time with the music and the moment — not just triggered randomly.</p>
+
+        <div class="equip-list" aria-label="EFX options available">
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Cold Spark Machines</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">CO₂ / Cryo Jets</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Laser Light Systems</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Atmospheric Fog &amp; Haze</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">Moving Head Beams</span></div>
+          <div class="equip-item"><div class="equip-dot"></div><span class="equip-text">LED Par + Wash Lighting</span></div>
+        </div>
+
+        <a href="contact.html" class="btn btn--primary">Add EFX <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+
+      <div class="svc-visual reveal" data-delay="80">
+        <div class="svc-visual-inner">
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-ring"></div>
+          <div class="svc-visual-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+        </div>
+        <div class="svc-tag">
+          <div class="svc-tag-dot"></div>
+          <span class="svc-tag-text">Special Effects</span>
+        </div>
+        <div class="svc-number" aria-hidden="true">04</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────────── -->
+<section class="services-cta">
+  <div class="container">
+    <p class="t-label reveal" style="text-align:center;display:block;margin-bottom:var(--sp-4)">Ready to get started</p>
+    <h2 class="section-title reveal" data-delay="60" style="text-align:center;font-size:clamp(2.5rem,6vw,5rem);margin-bottom:var(--sp-7)">Let's Build Your Package</h2>
+    <div class="btn-group reveal" data-delay="140" style="justify-content:center">
+      <a href="packages.html" class="btn btn--primary btn--lg">View Packages</a>
+      <a href="contact.html" class="btn btn--ghost btn--lg">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="logo.jpg" alt="JN Entertainment" height="44" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <svg class="logo-svg" style="display:none;height:44px;width:auto" viewBox="0 0 120 60" aria-hidden="true">
+            <text x="4" y="52" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="58" font-weight="900" fill="#fff" letter-spacing="-1">JN</text>
+            <circle cx="24" cy="47" r="9" fill="#E01212"/><circle cx="24" cy="47" r="3.5" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <p>Premium DJ, MC, AV &amp; EFX entertainment for weddings, birthdays and corporate events.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="JN Entertainment on Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Services links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html">DJ</a></li>
+          <li><a href="services.html">MC</a></li>
+          <li><a href="services.html">AV Production</a></li>
+          <li><a href="services.html">Special EFX</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Company links">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="packages.html">Packages</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Book Now</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&copy; 2025 JN Entertainment. All rights reserved.</p>
+      <a href="https://www.instagram.com/jnentertainment.av/" target="_blank" rel="noopener noreferrer" class="footer-copyright" style="color:var(--c-grey-2);transition:color 150ms ease-out" onmouseover="this.style.color='var(--c-white)'" onmouseout="this.style.color='var(--c-grey-2)'">@jnentertainment.av</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
