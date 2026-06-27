@@ -37,23 +37,34 @@
   /* ── Page transition ────────────────────────────────────────── */
   const overlay = document.createElement('div');
   overlay.id = 'page-overlay';
+  overlay.innerHTML = `
+    <div class="pt-panel pt-panel-1"></div>
+    <div class="pt-panel pt-panel-2"></div>
+  `;
   document.body.appendChild(overlay);
 
-  // Entrance: slide overlay away on load
+  const logoStamp = document.createElement('div');
+  logoStamp.className = 'pt-logo';
+  logoStamp.innerHTML = `<div class="pt-logo-text">J<span>N</span></div>`;
+  document.body.appendChild(logoStamp);
+
   function pageEnter() {
-    overlay.style.transition = 'none';
-    overlay.style.transform = 'translateY(0)';
+    // Panels start at translateY(0) — set via is-active, then lift out
+    overlay.classList.add('is-active');
+    logoStamp.style.opacity = '1';
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        overlay.style.transition = 'transform 480ms cubic-bezier(0.23,1,0.32,1)';
-        overlay.style.transform = 'translateY(-100%)';
+        overlay.classList.remove('is-active');
+        overlay.classList.add('is-leaving');
+        logoStamp.style.opacity = '0';
+        setTimeout(() => overlay.classList.remove('is-leaving'), 600);
       });
     });
   }
 
   window.addEventListener('DOMContentLoaded', pageEnter);
 
-  // Exit: slide overlay in before navigation
   if (!reduced) {
     document.addEventListener('click', function (e) {
       const link = e.target.closest('a[href]');
@@ -64,9 +75,11 @@
           link.target === '_blank') return;
 
       e.preventDefault();
-      overlay.style.transition = 'transform 320ms cubic-bezier(0.32,0.72,0,1)';
-      overlay.style.transform = 'translateY(0)';
-      setTimeout(() => { window.location.href = href; }, 320);
+      overlay.classList.remove('is-leaving');
+      overlay.classList.add('is-active');
+      logoStamp.style.transition = 'opacity 160ms ease-out 200ms';
+      logoStamp.style.opacity = '1';
+      setTimeout(() => { window.location.href = href; }, 520);
     });
   }
 
