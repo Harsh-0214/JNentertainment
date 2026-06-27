@@ -37,31 +37,13 @@
   /* ── Page transition ────────────────────────────────────────── */
   const overlay = document.createElement('div');
   overlay.id = 'page-overlay';
-  overlay.innerHTML = `
-    <div class="pt-panel pt-panel-1"></div>
-    <div class="pt-panel pt-panel-2"></div>
-  `;
   document.body.appendChild(overlay);
 
-  const logoStamp = document.createElement('div');
-  logoStamp.className = 'pt-logo';
-  logoStamp.innerHTML = `<div class="pt-logo-text">J<span>N</span></div>`;
-  document.body.appendChild(logoStamp);
-
   function pageEnter() {
-    // Panels already cover the screen (CSS default) — now reveal the page
+    // Page loads with overlay visible (opacity:1) — fade it out
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        overlay.classList.add('is-revealing');
-        logoStamp.style.opacity = '0';
-        setTimeout(() => {
-          overlay.classList.remove('is-revealing');
-          // Reset panels below screen ready for next exit
-          overlay.querySelectorAll('.pt-panel').forEach(p => {
-            p.style.transition = 'none';
-            p.style.transform = 'translateY(100%)';
-          });
-        }, 620);
+        overlay.classList.add('is-hidden');
       });
     });
   }
@@ -78,19 +60,8 @@
           link.target === '_blank') return;
 
       e.preventDefault();
-      // Reset panels to bottom, then animate them covering the screen
-      overlay.querySelectorAll('.pt-panel').forEach(p => {
-        p.style.transition = 'none';
-        p.style.transform = 'translateY(100%)';
-      });
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          overlay.classList.add('is-covering');
-          logoStamp.style.transition = 'opacity 160ms ease-out 260ms';
-          logoStamp.style.opacity = '1';
-          setTimeout(() => { window.location.href = href; }, 520);
-        });
-      });
+      overlay.classList.remove('is-hidden'); // fade overlay in
+      setTimeout(() => { window.location.href = href; }, 420);
     });
   }
 
