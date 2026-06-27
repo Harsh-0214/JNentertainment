@@ -35,66 +35,64 @@
   })();
 
   /* ── Page transition ────────────────────────────────────────── */
-  const overlay = document.createElement('div');
-  overlay.id = 'page-overlay';
-  overlay.innerHTML = `
-    <div class="pt-logo-text">J<span class="accent">N</span></div>
-    <div class="pt-loader"><div class="pt-loader-bar"></div></div>
-  `;
-  document.body.appendChild(overlay);
+  const supportsVT = CSS.supports('view-transition-name', 'none');
 
-  const logoText  = overlay.querySelector('.pt-logo-text');
-  const loader    = overlay.querySelector('.pt-loader');
-  const loaderBar = overlay.querySelector('.pt-loader-bar');
-  const mainEl    = document.querySelector('main');
+  if (!supportsVT) {
+    // Fallback for browsers without View Transitions API
+    const overlay = document.createElement('div');
+    overlay.id = 'page-overlay';
+    overlay.innerHTML = `
+      <div class="pt-logo-text">J<span class="accent">N</span></div>
+      <div class="pt-loader"><div class="pt-loader-bar"></div></div>
+    `;
+    document.body.appendChild(overlay);
 
-  function pageEnter() {
-    // Show logo + loader briefly, then reveal page
-    requestAnimationFrame(() => {
-      logoText.classList.add('visible');
-      loader.classList.add('visible');
+    const logoText  = overlay.querySelector('.pt-logo-text');
+    const loader    = overlay.querySelector('.pt-loader');
+    const loaderBar = overlay.querySelector('.pt-loader-bar');
+    const mainEl    = document.querySelector('main');
 
-      setTimeout(() => {
-        loaderBar.classList.add('full');
-      }, 80);
-
-      setTimeout(() => {
-        overlay.classList.add('is-hidden');
-        if (mainEl) mainEl.classList.add('page-ready');
-      }, 600);
-    });
-  }
-
-  window.addEventListener('DOMContentLoaded', pageEnter);
-
-  if (!reduced) {
-    document.addEventListener('click', function (e) {
-      const link = e.target.closest('a[href]');
-      if (!link) return;
-      const href = link.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http') ||
-          href.startsWith('mailto') || href.startsWith('tel') ||
-          link.target === '_blank') return;
-
-      e.preventDefault();
-
-      // Reset loader
-      loaderBar.style.transition = 'none';
-      loaderBar.classList.remove('full');
-      loader.classList.remove('visible');
-      logoText.classList.remove('visible');
-      overlay.classList.remove('is-hidden');
-
+    function pageEnter() {
       requestAnimationFrame(() => {
+        logoText.classList.add('visible');
+        loader.classList.add('visible');
+        setTimeout(() => loaderBar.classList.add('full'), 60);
+        setTimeout(() => {
+          overlay.classList.add('is-hidden');
+          if (mainEl) mainEl.classList.add('page-ready');
+        }, 520);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', pageEnter);
+
+    if (!reduced) {
+      document.addEventListener('click', function (e) {
+        const link = e.target.closest('a[href]');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') ||
+            href.startsWith('mailto') || href.startsWith('tel') ||
+            link.target === '_blank') return;
+
+        e.preventDefault();
+        loaderBar.style.transition = 'none';
+        loaderBar.classList.remove('full');
+        loader.classList.remove('visible');
+        logoText.classList.remove('visible');
+        overlay.classList.remove('is-hidden');
+
         requestAnimationFrame(() => {
-          logoText.classList.add('visible');
-          loader.classList.add('visible');
-          loaderBar.style.transition = '';
-          setTimeout(() => loaderBar.classList.add('full'), 40);
-          setTimeout(() => { window.location.href = href; }, 600);
+          requestAnimationFrame(() => {
+            logoText.classList.add('visible');
+            loader.classList.add('visible');
+            loaderBar.style.transition = '';
+            setTimeout(() => loaderBar.classList.add('full'), 40);
+            setTimeout(() => { window.location.href = href; }, 520);
+          });
         });
       });
-    });
+    }
   }
 
   /* ── Navbar ─────────────────────────────────────────────────── */

@@ -690,7 +690,28 @@ section { padding-block: var(--section-py); }
   transform: translateY(0);
 }
 
-/* ── Page transition ────────────────────────────────────────────── */
+/* ── View Transitions API (Chrome/Edge/Safari 18+) ──────────────── */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+  animation: vt-fade-out 220ms cubic-bezier(0.4,0,1,1) forwards;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 380ms cubic-bezier(0,0,0.2,1) forwards;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Fallback loader (non-supporting browsers) ───────────────────── */
 #page-overlay {
   position: fixed;
   inset: 0;
@@ -703,11 +724,14 @@ section { padding-block: var(--section-py); }
   align-items: center;
   justify-content: center;
   gap: 20px;
-  transition: opacity 600ms cubic-bezier(0.23,1,0.32,1);
+  transition: opacity 500ms cubic-bezier(0.23,1,0.32,1);
 }
 
-#page-overlay.is-hidden {
-  opacity: 0;
+#page-overlay.is-hidden { opacity: 0; }
+
+/* Hide overlay entirely when view transitions are supported */
+@supports (view-transition-name: none) {
+  #page-overlay { display: none !important; }
 }
 
 .pt-logo-text {
@@ -719,16 +743,12 @@ section { padding-block: var(--section-py); }
   opacity: 0;
   transform: translateY(12px);
   transition:
-    opacity  400ms cubic-bezier(0.23,1,0.32,1),
-    transform 400ms cubic-bezier(0.23,1,0.32,1);
+    opacity   380ms cubic-bezier(0.23,1,0.32,1),
+    transform 380ms cubic-bezier(0.23,1,0.32,1);
 }
 
 .pt-logo-text .accent { color: var(--c-primary); }
-
-.pt-logo-text.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.pt-logo-text.visible { opacity: 1; transform: translateY(0); }
 
 .pt-loader {
   width: 40px;
@@ -737,7 +757,7 @@ section { padding-block: var(--section-py); }
   border-radius: 2px;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 300ms ease;
+  transition: opacity 200ms ease;
 }
 
 .pt-loader.visible { opacity: 1; }
@@ -747,23 +767,25 @@ section { padding-block: var(--section-py); }
   width: 0%;
   background: var(--c-primary);
   border-radius: 2px;
-  transition: width 380ms cubic-bezier(0.23,1,0.32,1);
+  transition: width 360ms cubic-bezier(0.23,1,0.32,1);
 }
 
 .pt-loader-bar.full { width: 100%; }
 
-/* Page content entrance */
+/* Page content entrance for fallback */
 main {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
   transition:
-    opacity   700ms cubic-bezier(0.23,1,0.32,1) 100ms,
-    transform 700ms cubic-bezier(0.23,1,0.32,1) 100ms;
+    opacity   600ms cubic-bezier(0.23,1,0.32,1) 80ms,
+    transform 600ms cubic-bezier(0.23,1,0.32,1) 80ms;
 }
 
-main.page-ready {
-  opacity: 1;
-  transform: translateY(0);
+main.page-ready { opacity: 1; transform: translateY(0); }
+
+/* When view transitions are active, main is always visible */
+@supports (view-transition-name: none) {
+  main { opacity: 1; transform: none; transition: none; }
 }
 
 /* ── Accessibility ──────────────────────────────────────────────── */
