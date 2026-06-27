@@ -6,22 +6,30 @@
 
   /* ── Aurora background ──────────────────────────────────────── */
   (function initAurora() {
+    const isMobile = window.innerWidth < 768;
+    const slowConn = navigator.connection &&
+      (navigator.connection.saveData ||
+       ['slow-2g','2g'].includes(navigator.connection.effectiveType));
+
     const layer = document.createElement('div');
     layer.id = 'aurora-layer';
     layer.setAttribute('aria-hidden', 'true');
 
-    layer.innerHTML = `
+    // On slow connections skip blobs entirely, just keep a static pulse
+    layer.innerHTML = slowConn ? '' : `
       <div class="aurora-pulse"></div>
       <div class="aurora-blob aurora-blob-1"></div>
       <div class="aurora-blob aurora-blob-2"></div>
-      <div class="aurora-blob aurora-blob-3"></div>
       <div class="aurora-stars"></div>
     `;
 
     document.body.prepend(layer);
 
+    if (slowConn || reduced) return;
+
     const starContainer = layer.querySelector('.aurora-stars');
-    const starCount = reduced ? 0 : 80;
+    // Far fewer stars on mobile — each one is an animated DOM node
+    const starCount = isMobile ? 18 : 80;
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
       star.className = 'aurora-star';
