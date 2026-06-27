@@ -49,16 +49,19 @@
   document.body.appendChild(logoStamp);
 
   function pageEnter() {
-    // Panels start at translateY(0) — set via is-active, then lift out
-    overlay.classList.add('is-active');
-    logoStamp.style.opacity = '1';
-
+    // Panels already cover the screen (CSS default) — now reveal the page
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        overlay.classList.remove('is-active');
-        overlay.classList.add('is-leaving');
+        overlay.classList.add('is-revealing');
         logoStamp.style.opacity = '0';
-        setTimeout(() => overlay.classList.remove('is-leaving'), 600);
+        setTimeout(() => {
+          overlay.classList.remove('is-revealing');
+          // Reset panels below screen ready for next exit
+          overlay.querySelectorAll('.pt-panel').forEach(p => {
+            p.style.transition = 'none';
+            p.style.transform = 'translateY(100%)';
+          });
+        }, 620);
       });
     });
   }
@@ -75,11 +78,19 @@
           link.target === '_blank') return;
 
       e.preventDefault();
-      overlay.classList.remove('is-leaving');
-      overlay.classList.add('is-active');
-      logoStamp.style.transition = 'opacity 160ms ease-out 200ms';
-      logoStamp.style.opacity = '1';
-      setTimeout(() => { window.location.href = href; }, 520);
+      // Reset panels to bottom, then animate them covering the screen
+      overlay.querySelectorAll('.pt-panel').forEach(p => {
+        p.style.transition = 'none';
+        p.style.transform = 'translateY(100%)';
+      });
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          overlay.classList.add('is-covering');
+          logoStamp.style.transition = 'opacity 160ms ease-out 260ms';
+          logoStamp.style.opacity = '1';
+          setTimeout(() => { window.location.href = href; }, 520);
+        });
+      });
     });
   }
 
