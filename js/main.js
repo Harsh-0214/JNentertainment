@@ -37,14 +37,31 @@
   /* ── Page transition ────────────────────────────────────────── */
   const overlay = document.createElement('div');
   overlay.id = 'page-overlay';
+  overlay.innerHTML = `
+    <div class="pt-logo-text">J<span class="accent">N</span></div>
+    <div class="pt-loader"><div class="pt-loader-bar"></div></div>
+  `;
   document.body.appendChild(overlay);
 
+  const logoText  = overlay.querySelector('.pt-logo-text');
+  const loader    = overlay.querySelector('.pt-loader');
+  const loaderBar = overlay.querySelector('.pt-loader-bar');
+  const mainEl    = document.querySelector('main');
+
   function pageEnter() {
-    // Page loads with overlay visible (opacity:1) — fade it out
+    // Show logo + loader briefly, then reveal page
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+      logoText.classList.add('visible');
+      loader.classList.add('visible');
+
+      setTimeout(() => {
+        loaderBar.classList.add('full');
+      }, 80);
+
+      setTimeout(() => {
         overlay.classList.add('is-hidden');
-      });
+        if (mainEl) mainEl.classList.add('page-ready');
+      }, 600);
     });
   }
 
@@ -60,8 +77,23 @@
           link.target === '_blank') return;
 
       e.preventDefault();
-      overlay.classList.remove('is-hidden'); // fade overlay in
-      setTimeout(() => { window.location.href = href; }, 420);
+
+      // Reset loader
+      loaderBar.style.transition = 'none';
+      loaderBar.classList.remove('full');
+      loader.classList.remove('visible');
+      logoText.classList.remove('visible');
+      overlay.classList.remove('is-hidden');
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          logoText.classList.add('visible');
+          loader.classList.add('visible');
+          loaderBar.style.transition = '';
+          setTimeout(() => loaderBar.classList.add('full'), 40);
+          setTimeout(() => { window.location.href = href; }, 600);
+        });
+      });
     });
   }
 
